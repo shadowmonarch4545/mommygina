@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Happy Birthday</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  background: linear-gradient(135deg, #f6e6d9, #fdf3ea);
+  min-height: 100svh;
+  overflow: hidden;
+}
+body.ready { overflow-y: auto; }
+
+/* INTRO */
+#intro {
+  position: fixed;
+  inset: 0;
+  background: black;
+  display: grid;
+  place-items: center;
+  z-index: 9999;
+  transition: opacity 1.5s ease;
+}
+
+#nebula {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(140,120,255,.35), transparent 60%),
+    radial-gradient(circle at 70% 60%, rgba(255,120,180,.35), transparent 65%),
+    radial-gradient(circle at 50% 50%, rgba(120,255,220,.25), transparent 70%);
+  filter: blur(50px);
+}
+
+#introText {
+  position: relative;
+  color: white;
+  font-size: clamp(2rem, 8vw, 3rem);
+  letter-spacing: 3px;
+  opacity: 0;
+  transform: scale(.9);
+  z-index: 2;
+}
+
+.aura {
+  position: absolute;
+  inset: -50%;
+  background: radial-gradient(circle, rgba(255,255,255,.4), transparent 70%);
+  filter: blur(40px);
+  animation: auraPulse 2.5s ease forwards;
+  z-index: -1;
+}
+
+@keyframes auraPulse {
+  from { opacity: 0; transform: scale(.6); }
+  to { opacity: 0; transform: scale(1.5); }
+}
+
+#shockwave {
+  position: absolute;
+  width: 20vmax;
+  height: 20vmax;
+  border-radius: 50%;
+  border: 4px solid rgba(255,255,255,.8);
+  opacity: 0;
+}
+
+@keyframes shockwave {
+  from { opacity: .8; transform: scale(.2); }
+  to { opacity: 0; transform: scale(3.5); }
+}
+
+@keyframes flyThrough {
+  0% {
+    transform: translateZ(0) scale(1);
+    opacity: 1;
+  }
+  60% {
+    transform: translateZ(400px) scale(1.4);
+    opacity: 1;
+  }
+  100% {
+    transform: translateZ(1200px) scale(3);
+    opacity: 0;
+  }
+}
+
+/* WARP */
+#warp {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 9998;
+  opacity: 0;
+}
+
+.warp-line {
+  position: absolute;
+  width: 2px;
+  height: 80px;
+  background: linear-gradient(to bottom, transparent, white, transparent);
+  animation: warpMove linear forwards;
+}
+
+@keyframes warpMove {
+  to { transform: translateY(120vh); opacity: 0; }
+}
+
+/* CARD */
+.card {
+  margin: 12vh auto;
+  background: white;
+  padding: 40px;
+  border-radius: 24px;
+  max-width: 480px;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0,0,0,.15);
+  opacity: 0;
+  transform: translateY(40px);
+  transition: 1.4s ease;
+}
+
+body.ready .card {
+  opacity: 1;
+  transform: none;
+}
+
+/* ===== FIRST CARD UPGRADE ===== */
+.first-card {
+  position: relative;
+  animation: cardLift 1.8s ease forwards;
+}
+
+@keyframes cardLift {
+  from {
+    opacity: 0;
+    transform: translateY(60px) scale(.97);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.first-card::before {
+  content: "";
+  position: absolute;
+  inset: -60%;
+  background: radial-gradient(circle, rgba(255,230,190,.45), transparent 65%);
+  opacity: .6;
+  animation: gentleGlow 5s ease-in-out infinite;
+  z-index: 0;
+}
+
+@keyframes gentleGlow {
+  0%, 100% { transform: scale(.9); opacity: .4; }
+  50% { transform: scale(1.1); opacity: .7; }
+}
+
+.first-card * {
+  position: relative;
+  z-index: 1;
+}
+
+.card-blessing {
+  font-family: 'Playfair Display', serif;
+  font-size: .85rem;
+  letter-spacing: .2em;
+  text-transform: uppercase;
+  opacity: .6;
+  display: block;
+  margin-bottom: 12px;
+}
+
+.card-title {
+  font-size: clamp(2.4rem, 6vw, 3.2rem);
+  margin: 10px 0;
+}
+
+.card-message {
+  font-size: 1.1rem;
+  line-height: 1.7;
+  opacity: .85;
+  margin: 20px 0;
+}
+
+.card-hint {
+  font-size: .9rem;
+  opacity: .6;
+  margin-top: 28px;
+}
+
+
+/* STORY */
+.story {
+  padding: 10vh 6vw;
+  display: flex;
+  flex-direction: column;
+  gap: 18vh;
+}
+
+.story-section {
+  max-width: 900px;
+  margin: auto;
+  text-align: center;
+  opacity: 0;
+  transform: translateY(60px);
+  transition: 1s ease;
+}
+
+.story-section.revealed {
+  opacity: 1;
+  transform: none;
+}
+
+.story-section img {
+  width: 100%;
+  border-radius: 24px;
+  box-shadow: 0 20px 40px rgba(0,0,0,.25);
+  margin-bottom: 24px;
+}
+
+/* SIGNATURE */
+.handwritten {
+  font-family: 'Great Vibes', cursive;
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  color: #6a3b2e;
+}
+
+.signature-svg svg {
+  width: 100%;
+  max-width: 360px;
+}
+
+.signature-svg path {
+  fill: none;
+  stroke: #4d2a1f;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+}
+
+.story-section.revealed .signature-svg path {
+  animation: drawSignature 4s ease forwards;
+}
+
+@keyframes drawSignature {
+  to { stroke-dashoffset: 0; }
+}
+
+/* BIBLE VERSE */
+.bible-verse {
+  background: rgba(255,255,255,.6);
+  backdrop-filter: blur(6px);
+  padding: 6vh 6vw;
+  border-radius: 24px;
+}
+
+.neon-btn {
+  position:fixed;
+  bottom:20px;
+  right:20px;
+  padding:14px 22px;
+  border:none;
+  border-radius:14px;
+  background:#ff0066;
+  color:white;
+  font-size:1rem;
+  cursor:pointer;
+  z-index:99999;
+  box-shadow:0 0 12px #ff0066,
+             0 0 24px #ff3399,
+             0 0 36px #ff66cc;
+  transition:0.3s ease;
+}
+
+.neon-btn:hover {
+  box-shadow:0 0 20px #ff0066,
+             0 0 40px #ff3399,
+             0 0 60px #ff66cc;
+  transform:scale(1.07);
+}
+
+@media (max-width: 480px) {
+  .card {
+    padding: 26px;
+    margin: 8vh 4vw;
+  }
+
+  .story {
+    padding: 6vh 4vw;
+  }
+
+  .story-section img {
+    border-radius: 18px;
+  }
+
+  body {
+    overflow-x: hidden;
+  }
+}
+
+
+</style>
+</head>
+
+<body>
+
+<div id="intro">
+  <div id="nebula"></div>
+  <div id="shockwave"></div>
+  <div id="introText">
+    HAPPY BIRTHDAY
+    <div class="aura"></div>
+  </div>
+</div>
+
+<div class="card first-card">
+  <span class="card-blessing">💐 A Special Blessing</span>
+
+  <h1 class="card-title">
+    Happy Birthday
+  </h1>
+
+  <p class="card-message">
+    Today we celebrate <strong>you</strong> —<br>
+    your faith, your love,<br>
+    and the blessing you are to our family.
+  </p>
+
+  <p class="card-hint">
+    Scroll slowly ↓  
+    This was made with love.
+  </p>
+
+  <p class="card-hint">
+    Press the music button before scrolling<br>
+    when the music starts, Scroll down
+
+  </p>
+
+
+
+  <button id="musicBtn" class="neon-btn">🎵 Music</button>
+
+
+
+
+
+</div>
+
+
+<!-- STORY (10 PHOTOS) -->
+<section class="story">
+
+  <div class="story-section"><img src="aunt1.jpg"><h2>💐 A Heart Full of Love</h2><p>Happy Birthday Mami! 57 naman di ay ka mami no ako lang ka isturya mami is your heart is full of love and peace scroll lang pa ubos mami hehe .</p></div>
+  <div class="story-section"><img src="aunt2.jpg"><h2>🙏 Guided by Faith</h2><p>Your faith is a quiet but powerful light, mami. Dili man ka pirmi mosulti ug taas nga mga pulong, pero ang imong pagtuo kay makita sa imong mga lihok, sa imong kalma nga kasing-kasing, ug sa imong kusog bisan sa lisod nga mga adlaw. The way you trust God through every season through joy, through struggles, through moments of waiting maka inspire gyud namo tanan.Salamat, mami, kay pinaagi sa imong pagtuo, nadungagan among paglaom ug kalinaw. Your life shows us how to trust God with a pure heart kanang pagtuo nga dili hadlok, dili magdali, ug dili mapul-an.</p></div>
+  <div class="story-section"><img src="aunt4.jpg"><h2>🕊️ Life of Grace</h2><p>57 na diay ka  mami, no? Grabe, the years may be adding up, pero mas nagkanindot gyud ka, and one of the reason nga naga usab ang  kinabuhi sa manga batan-on tungod nimo.Naa gud youth sa amo ah mami na buwagan ug uyab unya na reialize niya ni ana siya nako na "yah na igo gyud ko sa wali ni pastora adtos youth camp" and it change him damo ang na igo sa immo wali tong camp mami na nag hatag ug impact sa ilaha kinabuhi</p></div>
+  <div class="story-section"><img src="aunt7.jpg"><h2>✨ Full of Light</h2><p>Every word you speak, bisan pa gani kanang hilum ra nimo isulti, carries warmth and comfort. Imong mga lihok simple pero tinuod maka spread ug happiness sa tanan nga naa duol nimo. Mura ka’g suga sa balay, mami dili saba, dili kusog, pero klaro kaayo ang kahayag ug maka-init sa kasing-kasing.</p></div>
+  <div class="story-section"><img src="aunt8.jpg"><h2>⛪ Rooted in Faith</h2><p>Your dedication to your faith shines through in everything you do, mami. Dili lang kay nagtuo ka imong tibuok kinabuhi mismo ang nagpakita unsa ka tinuod, unsa ka matinud-anon, ug unsa ka devoted sa buhat sa Ginoo. As a Pastora, imong pulong dili lang moabot sa dalunggan, moabot gyud sa kasing-kasing ug usahay gani makapahinumdom sa among kalag nga mas duol pa diay ta sa Ginoo kaysa sa among nahibaw-an.
+
+Every message you preach, every prayer you lift, ug kada tapak nimo sa imong calling naa gyud siyay gahum, dili tungod nimo, pero tungod sa Ginoo nga nagbuhat ug naggamit nimo. Pero mami, ayaw kalimti nga imong pagka faithful mao’y hinungdan nga daghang kinabuhi ang nabag-o. Daghan ang nakadungog sa pulong sa Ginoo tungod kay wala ka kapoy, wala ka miundang, ug wala ka nihatag ug “ugma na lang.”
+
+Your compassion, your obedience, and your willingness to serve nakahatag ug kahayag sa mga tawo nga nangitngit ug kasing-kasing. Your love for God shows in the way you treat people, the way you pray for them, and the way you guide them with patience ug tinuod nga gugma.
+
+Mami, imong life is a living testimony.
+imong kinabuhi mao ang pinakakusog nga preaching nimo.
+And because of you, so many people have found hope, healing, ug balik pagduol sa Ginoo.
+
+You are truly God’s servant, mami giya, kahayag, ug inspirasyon sa tanan nga naka-ila nimo. 💛🙏</p></div>
+  <div class="story-section"><img src="aunt9.jpg"><h2>🤍 Deeply Cherished</h2><p>Your heart is full of love, mami, and that love reaches every single person you meet. Dili lang kay maayo raka nga tawo maayo sad ka nga kalag. When it comes from who you are  a woman with a gentle heart, a strong spirit, ug usa ka kasing-kasing nga andam pirmi motabang, mupalipay, ug mo ampo para sa uban.<br>
+
+You are truly cherished and treasured always, mami.<br>
+
+Salamat sa imong gugma, imong presence, ug imong pagka-inspiration sa among tanan.<br>
+You are a blessing we will never take for granted.<br>
+
+Love you, mami. Always. 💛🌿</div>
+  <div class="story-section"><img src="aunt10.jpg"><h2>🌼 Forever Thankful</h2><p>Mami, you’ve given us so much your patience, your strength, your sacrifices nga usahay dili na namo makita kay hilom lang ka pero sige gihapon ug lihok para sa tanan. You deserve a life filled with comfort, joy, and people who genuinely appreciate you. I hope this new chapter brings you more good health, more smiles, ug daghan pang maayo nga panahon nga makapahupay sa imong kalag og ka kapoy.
+
+May your days ahead be lighter, may your worries be fewer, and may your blessings be greater. We love you so much, mami. Thank you for being the strength of our family.And last is God is going to make another stories,another miracle and another chapter of your life <br>  "ANOTHER ONE IS ON THE WAY " </p></div>
+
+  <div class="story-section signature">
+    <p class="handwritten">Dear Mommy Gina C. Ruiz</p>
+
+    <div class="signature-svg">
+      <svg viewBox="0 0 600 120">
+        <path d="M20 80 Q60 20 100 80 T180 80 T260 80 T340 80 T420 80 T500 80" />
+      </svg>
+    </div>
+
+    <p>With love and prayers,<br><strong>From all of us 💐</strong></p>
+  </div>
+
+  <div class="story-section bible-verse">
+    “The Lord bless you and keep you.”<br>
+    <small>— Numbers 6:24–26</small>
+  </div>
+</section>
+
+<div id="warp"></div>
+
+<audio id="boom" src="music.mp"></audio>
+<audio id="bg-music" src="Amusic.mp3" autoplay loop></audio>
+
+<script>
+const intro = document.getElementById('intro');
+const shockwave = document.getElementById('shockwave');
+const boom = document.getElementById('boom');
+const warp = document.getElementById('warp');
+
+// FIXED: Use the correct ID for music
+const bgMusic = document.getElementById('bg-music');
+const musicBtn = document.getElementById('musicBtn');
+
+// INTRO ANIMATION
+setTimeout(() => {
+  document.getElementById('introText').style.opacity = 1;
+  boom.play().catch(()=>{});
+  shockwave.style.animation = 'shockwave 1s ease-out forwards';
+}, 300);
+
+setTimeout(() => startWarp(), 2000);
+
+setTimeout(() => {
+  intro.style.display = 'none';
+  document.body.classList.add('ready');
+}, 4500);
+
+function startWarp() {
+  warp.style.opacity = 1;
+
+  for (let i = 0; i < 100; i++) {
+    const l = document.createElement('div');
+    l.className = 'warp-line';
+    l.style.left = Math.random() * innerWidth + 'px';
+    l.style.top = Math.random() * innerHeight + 'px';
+    l.style.animationDuration = 1.2 + Math.random() + 's';
+    warp.appendChild(l);
+    setTimeout(() => l.remove(), 2000);
+  }
+
+  setTimeout(() => warp.style.opacity = 0, 1800);
+}
+
+// SCROLL REVEAL
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('revealed');
+      observer.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.25 });
+
+document.querySelectorAll('.story-section').forEach(s => observer.observe(s));
+
+// FIXED MUSIC BUTTON
+let musicPlaying = false;
+
+musicBtn.addEventListener('click', () => {
+  if (!musicPlaying) {
+    bgMusic.play().catch(()=>{});
+    musicPlaying = true;
+    musicBtn.textContent = '⏸ Pause';
+  } else {
+    bgMusic.pause();
+    musicPlaying = false;
+    musicBtn.textContent = '🎵 Music';
+  }
+});
+</script>
+
+
+</body>
+</html>
